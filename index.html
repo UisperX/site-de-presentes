@@ -240,11 +240,11 @@
   
   
   <script>
-  const chavePix = "03860657054"; // CPF sem pontos e traço
+  const chavePix = "03860657054"; 
 
   function generatePixQRCode(valor, descricao) {
-    const nomeRecebedor = "Gabriela Silva"; // ajuste seu nome aqui
-    const cidade = "SaoPaulo"; // ajuste a cidade (sem acento)
+    const nomeRecebedor = "Luiz Pedro Rodrigues"; 
+    const cidade = "SantaMaria"; 
     const valorFormatado = parseFloat(valor.replace(",", ".")).toFixed(2);
 
     const payload = `00020126360014BR.GOV.BCB.PIX011103860657054520400005303986540${valorFormatado.length}${valorFormatado}5802BR5913${nomeRecebedor}6009${cidade}62070503***6304`;
