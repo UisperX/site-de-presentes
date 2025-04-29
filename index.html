@@ -239,53 +239,62 @@
 </div>
   
   
-  <script>
+<script>
+  // Função para calcular o CRC16
+  function crc16(str) {
+    let crc = 0xFFFF;
+    for (let i = 0; i < str.length; i++) {
+      crc ^= str.charCodeAt(i) << 8;
+      for (let j = 0; j < 8; j++) {
+        if (crc & 0x8000) {
+          crc = (crc << 1) ^ 0x1021;
+        } else {
+          crc <<= 1;
+        }
+        crc &= 0xFFFF;
+      }
+    }
+    return crc.toString(16).toUpperCase().padStart(4, '0');
+  }
   
-
+  // Gera o QR Code Pix
   function generatePixQRCode(valor, descricao) {
-  const chavePix = "03860657054";
-  const nomeRecebedor = "Luiz Pedro Rodrigues";
-  const cidade = "SantaMaria";
-  const valorFormatado = parseFloat(valor.replace(",", ".")).toFixed(2);
-
-  const payload = `00020126360014BR.GOV.BCB.PIX0111${chavePix.length}${chavePix}5204000053039865406${valorFormatado}5802BR5913${nomeRecebedor}6009${cidade}62070503***6304`;
+    const chavePix = "03860657054"; // sua chave Pix (CPF)
+    const nomeRecebedor = "Luiz Pedro Rodrigues";
+    const cidadeRecebedor = "Santa Maria"; // tem espaço!
   
-  const qrCodeURL = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(payload)}`;
-  return qrCodeURL;
-}
-
-
-  function openPopup(title, price) {
-    document.getElementById('popupTitle').textContent = title;
-    document.getElementById('popupPrice').textContent = "Valor: R$ " + price;
-    const qrCodeSrc = generatePixQRCode(price, title);
-    document.getElementById('popupImage').src = qrCodeSrc;
-    document.getElementById('popup').style.display = 'flex';
+    const valorFormatado = parseFloat(valor.replace(",", ".")).toFixed(2);
+  
+    // Monta a Merchant Account Information (campo 26)
+    const merchantAccountInfo =
+      "0014BR.GOV.BCB.PIX" + // GUI
+      `0111${chavePix.length}${chavePix}`; // Chave
+  
+    // Monta toda a payload Pix
+    let payload =
+      "000201" + // Payload Format Indicator
+      "01" + "02" + "01" + // Point of Initiation Method (dynamic = 12, static = 11 ou 01)
+      "26" + (merchantAccountInfo.length.toString().padStart(2, '0')) + merchantAccountInfo + // Merchant Account Information
+      "52040000" + // Merchant Category Code (default 0000)
+      "5303986" +  // Currency (986 = BRL)
+      "54" + valorFormatado.length.toString().padStart(2, '0') + valorFormatado + // Amount
+      "5802BR" + // Country Code
+      "59" + nomeRecebedor.length.toString().padStart(2, '0') + nomeRecebedor + // Merchant Name
+      "60" + cidadeRecebedor.length.toString().padStart(2, '0') + cidadeRecebedor + // Merchant City
+      "62070503***"; // Additional Data Field Template, TxID (não obrigatório)
+  
+    // Calcular CRC16
+    const payloadParaCalculo = payload.replace("***", ""); 
+    const crc = crc16(payloadParaCalculo);
+    const payloadFinal = payload.replace("***", crc);
+  
+    // Gera o link do QR Code
+    const qrCodeURL = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(payloadFinal)}`;
+    
+    return qrCodeURL;
   }
-
-  function closePopup() {
-    document.getElementById('popup').style.display = 'none';
-    alert("Muito obrigado pelo seu presente! 🎁❤️");
-  }
-
-  function copyPixKey() {
-    const pixKeyInput = document.getElementById('pixKey');
-    pixKeyInput.select();
-    pixKeyInput.setSelectionRange(0, 99999); // para mobile
-    document.execCommand("copy");
-    alert("Chave PIX copiada! Agora é só colar no seu banco. 📋");
-  }
-
-  // Associa todos os botões "Presentear"
-  const buttons = document.querySelectorAll('.gift-card button');
-  buttons.forEach((button, index) => {
-    const card = button.parentElement;
-    const title = card.querySelector('h3').textContent;
-    const priceText = card.querySelector('p').textContent.replace('R$ ', '');
-
-    button.addEventListener('click', () => openPopup(title, priceText));
-  });
-</script>
+  </script>
+  
 
 
   
