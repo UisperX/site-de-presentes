@@ -240,17 +240,20 @@
   
   
   <script>
-  const chavePix = "03860657054"; 
+  
 
   function generatePixQRCode(valor, descricao) {
-    const nomeRecebedor = "Luiz Pedro Rodrigues"; 
-    const cidade = "SantaMaria"; 
-    const valorFormatado = parseFloat(valor.replace(",", ".")).toFixed(2);
+  const chavePix = "03860657054";
+  const nomeRecebedor = "Luiz Pedro Rodrigues";
+  const cidade = "SantaMaria";
+  const valorFormatado = parseFloat(valor.replace(",", ".")).toFixed(2);
 
-    const payload = `00020126360014BR.GOV.BCB.PIX011103860657054520400005303986540${valorFormatado.length}${valorFormatado}5802BR5913${nomeRecebedor}6009${cidade}62070503***6304`;
-    const qrCodeURL = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(payload)}`;
-    return qrCodeURL;
-  }
+  const payload = `00020126360014BR.GOV.BCB.PIX0111${chavePix.length}${chavePix}5204000053039865406${valorFormatado}5802BR5913${nomeRecebedor}6009${cidade}62070503***6304`;
+  
+  const qrCodeURL = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(payload)}`;
+  return qrCodeURL;
+}
+
 
   function openPopup(title, price) {
     document.getElementById('popupTitle').textContent = title;
