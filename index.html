@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista de Presentes - Casa Nova</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f3ed;
+      color: #4b3f2f;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #d9cbb5;
+      padding: 20px;
+      text-align: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2em;
+      color: #3d372f;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px;
+    }
+    .gift-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .gift-card {
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      padding: 15px;
+      text-align: center;
+    }
+    .gift-card img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+    .gift-card h3 {
+      font-size: 1.2em;
+      margin: 10px 0 5px;
+    }
+    .gift-card p {
+      font-size: 1em;
+      margin: 5px 0;
+    }
+    .gift-card button {
+      background-color: #6a9b6c;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 1em;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .gift-card button:hover {
+      background-color: #8c9b85;
+    }
+    #popup {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  #popupContent {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    max-width: 350px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  }
+  #popupContent img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 15px;
+  }
+  #popupContent button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    border: none;
+    background-color: #6a9b6c;
+    color: white;
+    font-size: 1em;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  #popupContent button:hover {
+    background-color: #8c9b85;
+  }
+    @keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+  </style>
+</head>
+<body>
+  <header>
+    <img src="logo.png" alt="logo">
+  </header>
+  
+  
+              <!-- Gift Cards -->
+  <div class="container">
+    <div class="gift-grid">
+      <div class="gift-card">
+        <img src="pacoca.jpg" alt="Vale passeio com a Paçoca">
+        <h3>Vale passeio com a Paçoca</h3>
+        <p>R$ 28,70</p>
+        <button>Presentear</button>
+      </div>
+      <div class="gift-card">
+        <img src="https://i.pinimg.com/736x/ab/58/6f/ab586f92ec2c47c9ec35074124457bda.jpg" alt="Setup Gamer do Luiz">
+        <h3>Setup Gamer do Luiz</h3>
+        <p>R$ 112,35</p>
+        <button>Presentear</button>
+      </div>
+      <div class="gift-card">
+        <img src="https://down-br.img.susercontent.com/file/4ce11578b049abc606c36a02423a1a00" alt="1 Mês de café para a Gabi">
+        <h3>1 Mês de café para a Gabi</h3>
+        <p>R$ 50,00</p>
+        <button>Presentear</button>
+      </div>
+      <div class="gift-card">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFWK-Gsi6UHcWMwUdg66wb5tefmKbN9aw2fg&s" alt="1 Mês de Mate pro Luiz">
+        <h3>1 Mês de Mate pro Luiz</h3>
+        <p>R$ 50,00</p>
+        <button>Presentear</button>
+      </div>
+      <div class="gift-card">
+        <img src="lumus.jpg" alt="Vale Abraço o Lumus">
+        <h3>Vale Abraço o Lumus</h3>
+        <p>R$ 31,23</p>
+        <button>Presentear</button>
+      </div>
+      <div class="gift-card">
+        <img src="https://img.freepik.com/fotos-gratis/sorriso-senior-da-mulher-com-um-trofeu_1194-875.jpg?semt=ais_hybrid&w=740" alt="Seja o Convidado Favorito">
+        <h3>Seja o Convidado Favorito</h3>
+        <p>R$ 230,00</p>
+        <button>Presentear</button>
+      </div>
+      <div class="gift-card">
+        <img src="https://media.istockphoto.com/id/177305616/pt/foto/casal-olhando-atrav%C3%A9s-de-venezianas.jpg?s=612x612&w=0&k=20&c=JilA5A7P2YrTjnNkoVYF27u3xPR20ejePCQ9Q-NQsiI=" alt="Exemplo">
+        <h3>Vale Visita sem aviso</h3>
+        <p>R$ 63,42</p>
+        <button>Presentear</button>
+      </div>
+      <div class="gift-card">
+        <img src="https://st2.depositphotos.com/3433891/6999/i/450/depositphotos_69995391-stock-photo-young-poor-man.jpg" alt="Exemplo">
+        <h3>Quero dar um presente, mas sou universitário</h3>
+        <p>R$ 10,00</p>
+        <button>Presentear</button>
+      </div>
+      <div class="gift-card">
+        <img src="https://pm1.aminoapps.com/7656/44a1ad8b37f81c0d6e5373d6c4f8980ffabfcbb1r1-736-978v2_00.jpg" alt="Exemplo">
+        <h3>Vale Opinar na Decoração</h3>
+        <p>R$ 46,67</p>
+        <button>Presentear</button>
+      </div>
+      <div class="gift-card">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4W0E_RjY-utp3wQZiGGjRNL-Lte64NiJ4Vw&s" alt="Exemplo">
+        <h3>Vale ensaio de fotos no terraço</h3>
+        <p>R$ 37,82</p>
+        <button>Presentear</button>
+      </div>
+      <div class="gift-card">
+        <img src="https://versatille.com/wp-content/uploads/paolacarosella_110229061_698005007701404_2087171037686708767_n-1.jpg" alt="Exemplo">
+        <h3>Vale um Jantar Feito Pela Gabi</h3>
+        <p>R$ 100,00</p>
+        <button>Presentear</button>
+      </div>
+      <div class="gift-card">
+        <img src="https://img.freepik.com/fotos-premium/homem-bonito-sorridente-lavando-louca-na-cozinha_264277-1406.jpg" alt="Exemplo">
+        <h3>Traga sua louça para o Luiz lavar</h3>
+        <p>R$ 27,90</p>
+        <button>Presentear</button>
+      </div>
+      <div class="gift-card">
+        <img src="https://media.istockphoto.com/id/1359969123/pt/vetorial/male-character-pull-huge-black-sack-isolated-on-white-background-man-carry-bag-with.jpg?s=1024x1024&w=is&k=20&c=xIJybqAOG_3qswmN53kUQ3z_MV8kUYbY9ER_uWF3CVc=" alt="Exemplo">
+        <h3>Jogue seu Inimigo do Terraço</h3>
+        <p>R$ 72,12</p>
+        <button>Presentear</button>
+      </div>
+      <div class="gift-card">
+        <img src="https://i.pinimg.com/736x/fe/81/5d/fe815dc5dbab9b540307560d5a90e714.jpg" alt="Exemplo">
+        <h3>Cantinho da Leitura da Gabi</h3>
+        <p>R$ 63,36</p>
+        <button>Presentear</button>
+      </div>
+      <div class="gift-card">
+        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjbnwwg4taUIGNOjs3md2gzppgfzgI0Azs-uNJTQwk9_DBzujip8_84s-DWkLQ8U1hjXkQyiedXSXL8JZepxXY0t3lG49rxclVCd0UX5Mmn1TMx1AjpxEtDV5I9pREl9h06ocdsRcbzW5dx/s1600/sof%25C3%25A1+arranhado.jpg" alt="Exemplo">
+        <h3>Arranhador do Lumus</h3>
+        <p>R$ 38,60</p>
+        <button>Presentear</button>
+      </div>
+      <div class="gift-card">
+        <img src="https://i.pinimg.com/736x/dd/c6/54/ddc654367dac56634982b489631c84d0.jpg" alt="Exemplo">
+        <h3>Financie nosso vício em Animes</h3>
+        <p>R$ 19,99</p>
+        <button>Presentear</button>
+      </div>
+    </div>
+  </div>
+  
+  
+  <!-- Pop-up -->
+<div id="popup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); justify-content:center; align-items:center; z-index:1000; animation: fadeIn 0.3s;">
+  <div style="background:white; padding:30px; border-radius:12px; text-align:center; position:relative; width:90%; max-width:400px;">
+    <span style="position:absolute; top:10px; right:15px; font-size:28px; font-weight:bold; cursor:pointer;" onclick="closePopup()">&times;</span>
+    <h2 id="popupTitle" style="margin-bottom:10px; color:#4b3f2f;"></h2>
+    <p id="popupPrice" style="margin-bottom:20px; color:#6a9b6c; font-size:18px;"></p>
+    <img id="popupImage" src="" alt="QR Code PIX" style="max-width:100%; border-radius:8px;">
+  </div>
+</div>
+
+  <div id="popup">
+  <div id="popupContent">
+    <h2 id="popupTitle"></h2>
+    <p id="popupPrice"></p>
+    <img id="popupImage" src="" alt="QR Code PIX">
+    <p><small>Ou copie a chave PIX:</small></p>
+    <input type="text" id="pixKey" value="03860657054" readonly style="width: 100%; padding: 8px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;">
+    <button onclick="copyPixKey()">Copiar Chave PIX</button><br><br>
+    <button onclick="closePopup()">Fechar</button>
+  </div>
+</div>
+  
+  
+  <script>
+  const chavePix = "03860657054"; // CPF sem pontos e traço
+
+  function generatePixQRCode(valor, descricao) {
+    const nomeRecebedor = "Gabriela Silva"; // ajuste seu nome aqui
+    const cidade = "SaoPaulo"; // ajuste a cidade (sem acento)
+    const valorFormatado = parseFloat(valor.replace(",", ".")).toFixed(2);
+
+    const payload = `00020126360014BR.GOV.BCB.PIX011103860657054520400005303986540${valorFormatado.length}${valorFormatado}5802BR5913${nomeRecebedor}6009${cidade}62070503***6304`;
+    const qrCodeURL = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(payload)}`;
+    return qrCodeURL;
+  }
+
+  function openPopup(title, price) {
+    document.getElementById('popupTitle').textContent = title;
+    document.getElementById('popupPrice').textContent = "Valor: R$ " + price;
+    const qrCodeSrc = generatePixQRCode(price, title);
+    document.getElementById('popupImage').src = qrCodeSrc;
+    document.getElementById('popup').style.display = 'flex';
+  }
+
+  function closePopup() {
+    document.getElementById('popup').style.display = 'none';
+    alert("Muito obrigado pelo seu presente! 🎁❤️");
+  }
+
+  function copyPixKey() {
+    const pixKeyInput = document.getElementById('pixKey');
+    pixKeyInput.select();
+    pixKeyInput.setSelectionRange(0, 99999); // para mobile
+    document.execCommand("copy");
+    alert("Chave PIX copiada! Agora é só colar no seu banco. 📋");
+  }
+
+  // Associa todos os botões "Presentear"
+  const buttons = document.querySelectorAll('.gift-card button');
+  buttons.forEach((button, index) => {
+    const card = button.parentElement;
+    const title = card.querySelector('h3').textContent;
+    const priceText = card.querySelector('p').textContent.replace('R$ ', '');
+
+    button.addEventListener('click', () => openPopup(title, priceText));
+  });
+</script>
+
+
+  
+</body>
+</html>
