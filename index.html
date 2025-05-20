@@ -17,6 +17,10 @@
       padding: 20px;
       text-align: center;
     }
+    header img {
+      max-width: 100%;
+      height: auto;
+    }
     header h1 {
       margin: 0;
       font-size: 2em;
@@ -26,6 +30,21 @@
       max-width: 1200px;
       margin: 0 auto;
       padding: 40px;
+    }
+    .botao-padrao {
+      padding: 10px 20px;
+      background-color: white;
+      border: 2px solid #6a9b6c;
+      color: #6a9b6c;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .botao-padrao:hover {
+      background-color: #6a9b6c;
+    color: white;
     }
     .gift-grid {
       display: grid;
@@ -217,26 +236,24 @@
   
   
   <!-- Pop-up -->
+<!-- Pop-up único -->
 <div id="popup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); justify-content:center; align-items:center; z-index:1000; animation: fadeIn 0.3s;">
   <div style="background:white; padding:30px; border-radius:12px; text-align:center; position:relative; width:90%; max-width:400px;">
     <span style="position:absolute; top:10px; right:15px; font-size:28px; font-weight:bold; cursor:pointer;" onclick="closePopup()">&times;</span>
     <h2 id="popupTitle" style="margin-bottom:10px; color:#4b3f2f;"></h2>
     <p id="popupPrice" style="margin-bottom:20px; color:#6a9b6c; font-size:18px;"></p>
-    <img id="popupImage" src="" alt="QR Code PIX" style="max-width:100%; border-radius:8px;">
+    
+    <!-- QR Code -->
+    <img id="popupImage" src="" alt="QR Code PIX" style="max-width:100%; border-radius:8px; margin-bottom: 10px;">
+    
+    <!-- CPF/Chave PIX -->
+    <p style="margin-top: 10px;"><strong>Chave PIX:</strong> 03860657054</p>
+    
+    <!-- Botão fechar -->
+    <button onclick="closePopup()" class="botao-padrao">Fechar</button>
   </div>
 </div>
 
-  <div id="popup">
-  <div id="popupContent">
-    <h2 id="popupTitle"></h2>
-    <p id="popupPrice"></p>
-    <img id="popupImage" src="" alt="QR Code PIX">
-    <p><small>Ou copie a chave PIX:</small></p>
-    <input type="text" id="pixKey" value="03860657054" readonly style="width: 100%; padding: 8px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;">
-    <button onclick="copyPixKey()">Copiar Chave PIX</button><br><br>
-    <button onclick="closePopup()">Fechar</button>
-  </div>
-</div>
   
   
 <script>
@@ -256,47 +273,79 @@
     }
     return crc.toString(16).toUpperCase().padStart(4, '0');
   }
-  
+
   // Gera o QR Code Pix
   function generatePixQRCode(valor, descricao) {
-    const chavePix = "03860657054"; // sua chave Pix (CPF)
-    const nomeRecebedor = "Luiz Pedro Rodrigues";
-    const cidadeRecebedor = "Santa Maria"; // tem espaço!
-  
-    const valorFormatado = parseFloat(valor.replace(",", ".")).toFixed(2);
-  
-    // Monta a Merchant Account Information (campo 26)
-    const merchantAccountInfo =
-      "0014BR.GOV.BCB.PIX" + // GUI
-      `0111${chavePix.length}${chavePix}`; // Chave
-  
-    // Monta toda a payload Pix
-    let payload =
-      "000201" + // Payload Format Indicator
-      "01" + "02" + "01" + // Point of Initiation Method (dynamic = 12, static = 11 ou 01)
-      "26" + (merchantAccountInfo.length.toString().padStart(2, '0')) + merchantAccountInfo + // Merchant Account Information
-      "52040000" + // Merchant Category Code (default 0000)
-      "5303986" +  // Currency (986 = BRL)
-      "54" + valorFormatado.length.toString().padStart(2, '0') + valorFormatado + // Amount
-      "5802BR" + // Country Code
-      "59" + nomeRecebedor.length.toString().padStart(2, '0') + nomeRecebedor + // Merchant Name
-      "60" + cidadeRecebedor.length.toString().padStart(2, '0') + cidadeRecebedor + // Merchant City
-      "62070503***"; // Additional Data Field Template, TxID (não obrigatório)
-  
-    // Calcular CRC16
-    const payloadParaCalculo = payload.replace("***", ""); 
-    const crc = crc16(payloadParaCalculo);
-    const payloadFinal = payload.replace("***", crc);
-  
-    // Gera o link do QR Code
-    const qrCodeURL = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(payloadFinal)}`;
-    
-    return qrCodeURL;
+  const chavePix = "03860657054";
+  const nomeRecebedor = "LUIZ PEDRO RODRIGUES"; // em caixa alta, max 25 caracteres
+  const cidade = "SANTA MARIA"; // max 15 caracteres
+  const valorFormatado = parseFloat(valor.replace(",", ".")).toFixed(2);
+
+  function crc16(str) {
+    let crc = 0xFFFF;
+    for (let i = 0; i < str.length; i++) {
+      crc ^= str.charCodeAt(i) << 8;
+      for (let j = 0; j < 8; j++) {
+        crc = (crc & 0x8000) ? (crc << 1) ^ 0x1021 : (crc << 1);
+        crc &= 0xFFFF;
+      }
+    }
+    return crc.toString(16).toUpperCase().padStart(4, '0');
   }
-  </script>
-  
+
+  // Payload formatado conforme padrão Pix
+  let payload =
+    "000201" + // versão do payload
+    "010212" + // transação do tipo dinâmica (12)
+    "26" + // merchant account info
+      (
+        "0014BR.GOV.BCB.PIX" + // domínio do Pix
+        "01" + chavePix.length.toString().padStart(2, "0") + chavePix // chave Pix
+      ).length.toString().padStart(2, "0") +
+      "0014BR.GOV.BCB.PIX" +
+      "01" + chavePix.length.toString().padStart(2, "0") + chavePix +
+    "52040000" + // código do merchant category (sem categoria específica)
+    "5303986" + // moeda: 986 = BRL
+    "54" + valorFormatado.length.toString().padStart(2, "0") + valorFormatado +
+    "5802BR" + // país
+    "59" + nomeRecebedor.length.toString().padStart(2, "0") + nomeRecebedor +
+    "60" + cidade.length.toString().padStart(2, "0") + cidade +
+    "62070503***"; // campo adicional + CRC
+
+  const payloadSemCRC = payload.replace("***", "");
+  const crc = crc16(payloadSemCRC);
+  const payloadCompleto = payloadSemCRC + crc;
+
+  const qrCodeURL = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(payloadCompleto)}`;
+  return qrCodeURL;
+}
+
+  // FECHAR POPUP
+  function closePopup() {
+    document.getElementById("popup").style.display = "none";
+  }
+
+  // CLICK NOS BOTÕES
+  document.querySelectorAll(".gift-card button").forEach((btn) => {
+    btn.addEventListener("click", function () {
+      const card = this.parentElement;
+      const title = card.querySelector("h3").innerText;
+      const price = card.querySelector("p").innerText.replace("R$ ", "").trim();
+
+      document.getElementById("popupTitle").innerText = title;
+      document.getElementById("popupPrice").innerText = "R$ " + price;
+
+      const qrURL = generatePixQRCode(price, title);
+      document.getElementById("popupImage").src = qrURL;
+
+      // Mostra o popup
+      document.getElementById("popup").style.display = "flex";
+    });
+  });
+</script>
 
 
-  
 </body>
 </html>
+
+
